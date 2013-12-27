@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+echo '*** PACKAGE'
+PACKAGE_TYPE=$1
+
+# set build number to 0 if not already set by jenkins
+: ${BUILD_NUMBER:=0}
+
+# If no pacakge type, detect this platform and try to set
+if [ -z $PACKAGE_TYPE ]
+then
+  command -v ohai >/dev/null 2>&1 || { echo >&2 "Ohai is required for platform detection if not directly specified."; exit 12; }
+  PLATFORM=$(echo $(ohai -l error platform) | sed 's/\[ "//' | sed 's/" \]//')
+  echo "PLATFORM: $PLATFORM"
+  case "$PLATFORM" in
+  "ubuntu")
+    PACKAGE_TYPE=deb
+    ;;
+  "centos")
+    PACKAGE_TYPE=rpm
+    ;;
+  $)
+    echo "Unsupported platform '$PLATFORM', generating egg"
+    PACKAGE_TYPE=egg
+    ;;
+  esac
+fi
+
+case "$PACKAGE_TYPE" in
+"deb")
+  python setup.py sdist_dsc --debian-version ${BUILD_NUMBER} bdist_deb
+  ;;
+"rpm")
+  python setup.py bdist_rpm --requires "python-zope-interface" --obsoletes "python-twisted" --release=${BUILD_NUMBER}.el6
+  ;;
+"egg")
+  python setup.py bdist_egg
+  ;;
+*)
+  echo "Unknown package type '$PACKAGE_TYPE', generting generic binary distribution"
+  python setup.py bdist
+  ;;
+esac

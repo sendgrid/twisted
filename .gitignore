@@ -1,0 +1,17 @@
+*~
+*.pyc
+*.DS_Store
+TAGS
+*.log
+*.swp
+*.iml
+
+*.egg
+*.egg-info
+build/
+dist
+deb_dist
+
+.berkshelf/
+.kitchen/
+.vagrant/
