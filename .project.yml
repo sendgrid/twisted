@@ -1,0 +1,2 @@
+# These values are used by things like the Vagrantfile, packaging tools, etc.
+name: 'twisted'
