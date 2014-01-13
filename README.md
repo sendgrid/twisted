@@ -11,7 +11,7 @@ version branch.  Separate patch branches may be created as needed.
 
 ## Currently Supported
 
-Sendgrid currently has two builds of twisted, each build by Jenkins
+Sendgrid currently has two builds of twisted, each built by Jenkins
 
 * 10.0.0 http://build.sendgrid.net:8080/job/twisted/
 * 13.0.0 http://build.sendgrid.net:8080/job/twisted-13/
