@@ -31,9 +31,9 @@ $ git checkout twisted-12.0.0
 $ git co -b sendgrid-12.0.0
 ```
 
-3. Merge in the sendgrid_package_patch branch to integrate sendgrid changes
+3. Rebase sendgrid_package_patch branch onto sendgrid-12.0.0
 ```shell
-$ git merge origin sendgrid_package_patch
+$ git rebase sendgrid_package_patch
 ```
 
 4. Push branch to origin and create jenkins job to build rpm
