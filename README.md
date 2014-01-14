@@ -11,7 +11,7 @@ version branch.  Separate patch branches may be created as needed.
 
 ## Currently Supported
 
-Sendgrid currently has two builds of twisted, each build by Jenkins
+Sendgrid currently has two builds of twisted, each built by Jenkins
 
 * 10.0.0 http://build.sendgrid.net:8080/job/twisted/
 * 13.0.0 http://build.sendgrid.net:8080/job/twisted-13/
@@ -31,9 +31,10 @@ $ git checkout twisted-12.0.0
 $ git co -b sendgrid-12.0.0
 ```
 
-3. Merge in the sendgrid_package_patch branch to integrate sendgrid changes
+3. Cherry pick sendgrid_package_patch changes onto sendgrid-12.0.0
+NOTE: sendgrid_package_patch started at tag twisted-10.0.0
 ```shell
-$ git merge origin sendgrid_package_patch
+$ git cherry-pick twisted-10.0.0..sendgrid_package_patch
 ```
 
 4. Push branch to origin and create jenkins job to build rpm
