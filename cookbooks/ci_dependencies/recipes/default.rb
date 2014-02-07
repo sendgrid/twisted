@@ -8,3 +8,5 @@
 #
 include_recipe 'sendgrid_application_python::build'
 
+# for bin/package to build twisted RPM
+gem_package 'fpm'
