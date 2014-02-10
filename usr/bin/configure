@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo '*** CONFIGURE'
+
+echo 'TODO Any meaningful steps here?'
