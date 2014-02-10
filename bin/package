@@ -3,7 +3,7 @@ echo '*** PACKAGE'
 PACKAGE_TYPE=$1
 
 # twisted version
-VERSION=10.0.0
+VERSION=13.2.0
 
 # set build number to 0 if not already set by jenkins
 : ${BUILD_NUMBER:=0}
@@ -33,9 +33,14 @@ case "$PACKAGE_TYPE" in
   python setup.py sdist_dsc --debian-version ${BUILD_NUMBER} bdist_deb
   ;;
 "rpm")
+  TARGET_RPM=dist/Twisted-${VERSION}-${BUILD_NUMBER}.el6.x86_64.rpm
+  # TODO Can we do an sdist here instead and avoid unpacking Twisted again?
   python setup.py bdist
-  tar xf dist/Twisted-${VERSION}.linux-$(uname -m).tar.gz
-  /opt/chef/embedded/bin/fpm -s dir -t rpm -n Twisted -v ${VERSION} --iteration ${BUILD_NUMBER}.el6 -p Twisted-${VERSION}-${BUILD_NUMBER}.el6.x86_64.rpm -d "python" -d "python-zope-interface" --replaces python-twisted --category Development/Libraries --vendor sendgrid --license MIT --description 'An asynchronous networking framework written in Python' -x "*bin/test*" -x "*bin/build*" -x "*bin/package*" -x "*bin/admin*" usr
+  if [ -d build/rpm ]; then rm -rf build/rpm; fi
+  mkdir build/rpm
+  tar xf dist/Twisted-${VERSION}.linux-$(uname -m).tar.gz -C build/rpm
+  if [ -f $TARGET_RPM ]; then rm $TARGET_RPM; fi
+  /opt/chef/embedded/bin/fpm -s dir -t rpm -n Twisted -v ${VERSION} --iteration ${BUILD_NUMBER}.el6 -p $TARGET_RPM -d "python" -d "python-zope-interface >= 3.6.0" --replaces python-twisted --category Development/Libraries --vendor sendgrid --license MIT --description 'An asynchronous networking framework written in Python' -x "*bin/test*" -x "*bin/build*" -x "*bin/package*" -x "*bin/admin*" build/rpm/usr
   ;;
 "egg")
   python setup.py bdist_egg
