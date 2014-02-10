@@ -35,11 +35,13 @@ Vagrant.configure("2") do |config|
     # TODO Should we randomize or increment IP address?  Does it make a diff 
     # to parallel runs?
     c.vm.network "private_network", ip: "192.168.100.2"
-    c.vm.box = "sendgrid_centos-6.4_chef-11.8.0"
-    c.vm.box_url = "http://repo.sendgrid.net/sendgrid_centos-6.4_chef-11.8.0.box"
+    c.vm.box = "sendgrid_centos-6_chef-11.8.2"
+    c.vm.box_url = "http://repo.sjc1.sendgrid.net/images/virtualbox/sendgrid_centos-6_chef-11.8.2.box"
   end
 
   config.vm.provider :virtualbox do |vb|
+    vb.customize ['modifyvm', :id, '--natdnsproxy1', 'off']
+    vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'off']
     # Give enough horsepower to build without taking all day.
     vb.customize [
       "modifyvm", :id,

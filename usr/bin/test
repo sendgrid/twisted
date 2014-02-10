@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+echo '*** TEST'
+
+echo 'TODO Any meaningful steps here?'
